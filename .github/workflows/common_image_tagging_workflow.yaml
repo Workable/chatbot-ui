@@ -40,11 +40,14 @@ jobs:
       - name: set image tag
         id: set-tag
         shell: bash
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          INPUT_REF: ${{ inputs.ref }}
         run: |
-          if [[ "${{ inputs.tag }}" == "" ]]; then
-            FINAL_TAG=${{ inputs.ref }}-${GITHUB_SHA::7}-ts.$(date +%s)
+          if [[ "$INPUT_TAG" == "" ]]; then
+            FINAL_TAG=$INPUT_REF-${GITHUB_SHA::7}-ts.$(date +%s)
           else
-            FINAL_TAG=${{ inputs.tag }}
+            FINAL_TAG=$INPUT_TAG
           fi
           echo "Using tag: $FINAL_TAG"
           echo "tag=$FINAL_TAG" >> $GITHUB_OUTPUT

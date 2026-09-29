@@ -43,11 +43,14 @@ jobs:
       - name: set the build branch
         id: set-branch
         shell: bash
+        env:
+          MANUAL_BUILD_BRANCH: ${{ inputs.manual_build_branch }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          if [[ "${{ inputs.manual_build_branch }}" == "" ]]; then
-            ACTUAL_BRANCH=${{ github.ref_name }}
+          if [[ "$MANUAL_BUILD_BRANCH" == "" ]]; then
+            ACTUAL_BRANCH=$REF_NAME
           else
-            ACTUAL_BRANCH=${{ inputs.manual_build_branch }}
+            ACTUAL_BRANCH=$MANUAL_BUILD_BRANCH
           fi
           echo "ref-for-name=${ACTUAL_BRANCH#workable_feature/*}" >> $GITHUB_OUTPUT
           echo "ref-for-checkout=$ACTUAL_BRANCH" >> $GITHUB_OUTPUT
